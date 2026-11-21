@@ -1,0 +1,17 @@
+# Install PyTorch with CUDA FIRST (not from this file):
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+# Then SAM 3 (Python 3.13 needs --no-deps):
+#   git clone https://github.com/facebookresearch/sam3.git sam3-repo
+#   pip install -e ./sam3-repo --no-deps
+numpy
+opencv-python
+pyserial
+huggingface_hub
+timm>=1.0.17
+tqdm
+ftfy==6.1.1
+regex
+iopath>=0.1.10
+typing_extensions
+einops
+triton-windows; sys_platform == "win32"

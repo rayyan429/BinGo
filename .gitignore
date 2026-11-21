@@ -4,9 +4,9 @@ sam3env/
 .venv/
 venv/
 .env
+sam3-repo/
 *.pt
 *.pth
 *.safetensors
 checkpoints/
-sam3/
-Depth-Anything-3/
+*.jpg
