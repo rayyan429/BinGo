@@ -10,3 +10,6 @@ sam3-repo/
 *.safetensors
 checkpoints/
 *.jpg
+*.ts
+*.onnx
+*.engine
