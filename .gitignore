@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+sam3env/
+.venv/
+venv/
+.env
+*.pt
+*.pth
+*.safetensors
+checkpoints/
+sam3/
+Depth-Anything-3/
