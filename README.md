@@ -198,4 +198,4 @@ One USB cable programs, powers and talks to the board, so no extra hardware is n
 
 ## Team
 
-**BinGo** by team TidalByte, TIDAL Hackathon 2026.
+**BinGo**, tidalBYTE 2026.
