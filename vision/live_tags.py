@@ -1,28 +1,3 @@
-"""
-TIDAL — 3-category waste detector -> STM32 (LCD1602 + 3 LEDs)
-=============================================================
-Every frame, YOLOE finds waste items, each mask gets one of three categories,
-and the strongest one (smoothed over a few frames) is sent to the board:
-
-    PLASTIC  -> LCD "Plastic&Aluminum", GREEN LED   (bottles, cans, jugs, cartons...)
-    PAPER    -> LCD "Paper&Cardboard",  WHITE LED   (paper, cardboard, boxes...)
-    TRASH    -> LCD "Trash",            RED LED     (wrappers, napkins, food...)
-    IDLE     -> LCD "Show an item", all LEDs off    (nothing in view)
-
-    camera -> YOLOE -> masks tagged PLASTIC / PAPER / TRASH -> strongest mask
-           -> majority vote over the last 5 frames -> one word per line -> Nucleo
-
-Board: firmware/three_bins/three_bins.ino
-
-Run:
-    python vision/live_tags.py                 # finds the Nucleo by itself
-    python vision/live_tags.py --no-serial     # laptop only
-    python vision/live_tags.py --show-all      # print every label YOLOE sees
-    python vision/live_tags.py --smooth 3      # react faster
-
-Press q in the video window to quit.
-"""
-
 import argparse
 import time
 from collections import Counter, deque

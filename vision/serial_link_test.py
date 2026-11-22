@@ -1,23 +1,3 @@
-"""
-Serial link test: laptop -> Nucleo, no camera or model needed.
----------------------------------------------------------------
-Proves the USB -> ST-Link -> UART -> STM32 path works before you run the detector.
-
-Flash firmware/three_bins/three_bins.ino, close the Arduino Serial Monitor, then:
-    python vision/serial_link_test.py              # finds the Nucleo's port by itself
-    python vision/serial_link_test.py --port COM5  # or name it
-
-What you should see on the board (3 s each):
-    1. LCD "Show an item", LEDs off            (IDLE)
-    2. LCD "Plastic&Aluminum", GREEN LED       (PLASTIC)
-    3. LCD "Paper", WHITE LED                  (PAPER)
-    4. LCD "Trash", RED LED                    (TRASH)
-    5. LCD "Show an item", LEDs off            (IDLE)
-    6. script stops -> after 1.5 s "Laptop offline" + all LEDs blink (fail-safe)
-
-(--protocol simple tests simple_bins.ino; --protocol framed tests recycle_station.ino.)
-"""
-
 import argparse
 import time
 

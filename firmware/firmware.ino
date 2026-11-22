@@ -33,60 +33,74 @@
   If the LCD shows only blocks or nothing, turn the contrast pot.
 */
 
-#define USE_I2C_LCD 0   // 0 = 16-pin parallel LCD, 1 = I2C backpack
+#define USE_I2C_LCD 0 // 0 = 16-pin parallel LCD, 1 = I2C backpack
 
 #if USE_I2C_LCD
-  #include <Wire.h>
-  #include <LiquidCrystal_I2C.h>
-  LiquidCrystal_I2C lcd(0x27, 16, 2);
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 #else
-  #include <LiquidCrystal.h>
-  //               RS   E    D4   D5  D6  D7
-  LiquidCrystal lcd(D12, D11, D10, D9, D8, D7);
+#include <LiquidCrystal.h>
+//               RS   E    D4   D5  D6  D7
+LiquidCrystal lcd(D12, D11, D10, D9, D8, D7);
 #endif
 
-const int PIN_GREEN = D4;   // Plastic & Aluminum
-const int PIN_RED   = D5;   // Trash
-const int PIN_WHITE = D6;   // Paper & cardboard
+const int PIN_GREEN = D4; // Plastic & Aluminum
+const int PIN_RED = D5;   // Trash
+const int PIN_WHITE = D6; // Paper & cardboard
 
 const unsigned long TIMEOUT_MS = 1500;
 unsigned long lastMsg = 0;
 String line = "";
-String shown = "";          // what's on the LCD now, so we only redraw on change
+String shown = ""; // what's on the LCD now, so we only redraw on change
 
-void setLeds(bool g, bool w, bool r) {
+void setLeds(bool g, bool w, bool r)
+{
   digitalWrite(PIN_GREEN, g);
   digitalWrite(PIN_WHITE, w);
   digitalWrite(PIN_RED, r);
 }
 
-void showLcd(const String &top, const String &bottom) {
+void showLcd(const String &top, const String &bottom)
+{
   String key = top + "|" + bottom;
-  if (key == shown) return;           // no flicker: only redraw when it changes
+  if (key == shown)
+    return; // no flicker: only redraw when it changes
   shown = key;
   lcd.clear();
-  lcd.setCursor(0, 0); lcd.print(top);
-  lcd.setCursor(0, 1); lcd.print(bottom);
+  lcd.setCursor(0, 0);
+  lcd.print(top);
+  lcd.setCursor(0, 1);
+  lcd.print(bottom);
 }
 
-void handle(const String &cmd) {
+void handle(const String &cmd)
+{
   lastMsg = millis();
-  if (cmd == "PLASTIC") {
+  if (cmd == "PLASTIC")
+  {
     setLeds(true, false, false);
     showLcd("Plastic&Aluminum", "-> GREEN bin");
-  } else if (cmd == "PAPER") {
+  }
+  else if (cmd == "PAPER")
+  {
     setLeds(false, true, false);
     showLcd("Paper&Cardboard", "-> WHITE bin");
-  } else if (cmd == "TRASH") {
+  }
+  else if (cmd == "TRASH")
+  {
     setLeds(false, false, true);
     showLcd("Trash", "-> RED bin");
-  } else if (cmd == "IDLE") {
+  }
+  else if (cmd == "IDLE")
+  {
     setLeds(false, false, false);
     showLcd("Show an item", "to the camera");
   }
 }
 
-void setup() {
+void setup()
+{
   Serial.begin(115200);
   pinMode(PIN_GREEN, OUTPUT);
   pinMode(PIN_WHITE, OUTPUT);
@@ -101,23 +115,36 @@ void setup() {
 
   // Self-test: each LED in turn, so you can check the wiring
   showLcd("TIDAL Recycling", "LED test...");
-  setLeds(true, false, false);  delay(300);
-  setLeds(false, true, false);  delay(300);
-  setLeds(false, false, true);  delay(300);
+  setLeds(true, false, false);
+  delay(300);
+  setLeds(false, true, false);
+  delay(300);
+  setLeds(false, false, true);
+  delay(300);
   setLeds(false, false, false);
   showLcd("Waiting for", "laptop...");
 }
 
-void loop() {
+void loop()
+{
   // Non-blocking line reader: collect characters until '\n'
-  while (Serial.available()) {
+  while (Serial.available())
+  {
     char c = Serial.read();
-    if (c == '\n') { line.trim(); if (line.length()) handle(line); line = ""; }
-    else if (c != '\r' && line.length() < 20) line += c;
+    if (c == '\n')
+    {
+      line.trim();
+      if (line.length())
+        handle(line);
+      line = "";
+    }
+    else if (c != '\r' && line.length() < 20)
+      line += c;
   }
 
   // Fail-safe: laptop stopped talking -> say so and blink everything
-  if (lastMsg == 0 || millis() - lastMsg > TIMEOUT_MS) {
+  if (lastMsg == 0 || millis() - lastMsg > TIMEOUT_MS)
+  {
     bool on = (millis() / 300) % 2;
     setLeds(on, on, on);
     showLcd("Laptop offline", "Run live_tags.py");
